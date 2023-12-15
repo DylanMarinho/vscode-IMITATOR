@@ -1,0 +1,35 @@
+{
+  "name": "imitator-language",
+  "displayName": "IMITATOR language",
+  "description": "IMITATOR language support",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [{
+      "id": "imitator",
+      "aliases": ["IMITATOR", "imitator"],
+      "extensions": [".imi"],
+      "configuration": "./language-configuration.json"
+    },
+    {"id": "imitator-prop",
+      "aliases": ["IMITATOR property", "imitator property"],
+      "extensions": [".imiprop"],
+      "configuration": "./language-configuration.json" 
+    }
+    ],
+    "grammars": [{
+      "language": "imitator",
+      "scopeName": "source.imitator",
+      "path": "./syntaxes/imitator.tmLanguage.json"
+    },{
+      "language": "imitator-prop",
+      "scopeName": "source.imitator.property",
+      "path": "./syntaxes/imitator.property.tmLanguage.json"
+    }]
+  }
+}

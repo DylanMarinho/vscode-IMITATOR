@@ -1,0 +1,197 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "IMITATOR model",
+	"patterns": [
+		{
+			"include": "#comments"
+		},
+		{
+			"include": "#types"
+		},
+		{
+			"include": "#values"
+		},
+		{
+			"include": "#keywords"
+		},
+		{
+			"include": "#automaton"
+		},
+		{
+			"include": "#initial"
+		},
+		{
+			"include": "#strings"
+		}
+	],
+	"repository": {
+		"comments": {
+			"name": "comment.block",
+			"begin": "\\(\\*",
+			"end": "\\*\\)",
+			"patterns": [
+				{
+					"comment": "File metadata",
+					"match": "\\s+\\*\\s+(\\w+(\\s\\w+)*)\\s*\\:\\s*(.*)",
+					"captures":{
+					  "1":
+						  {"name": "markup.bold.imitator"},
+					  "3":
+						  {"name": "markup.italic.imitator"}
+					},
+					"name": "comment.block.imitator"
+				}
+			]
+		},
+		"types": {
+			"name": "storage.type",
+			"match": "\\b(clock|parameter|array|list|stack|queue|void|binary|bool|constant|discrete|int|rational)\\b"
+		},
+		"keywords": {
+			"patterns": [{
+				"name": "keyword.control.imitator",
+				"match": "\\b(var)\\b"
+			}
+			]
+		},
+		"automaton": {
+				"comment": "Automaton declaration",
+				"begin": "\\b(automaton)\\b (([a-zA-Z])+)",
+				"end": "end",
+				"beginCaptures": {
+					"1": {"name": "keyword.control.imitator"},
+					"2": {"name": "variable.other"}
+				},
+				"endCaptures": {
+					"0": {"name": "keyword.control.imitator"}
+				},
+				"patterns": [
+					{
+						"include": "#comments"
+					},
+					{
+						"comment": "Actions declaration",
+						"begin": "actions",
+						"end": ";",
+						"beginCaptures": {
+							"0": {"name": "keyword.control"}
+						}
+					},
+					{
+						"comment": "Location",
+						"match": "((accepting|urgent|\\s)*)\\s*(loc)\\s*(([a-zA-Z0-9])*)\\s*",
+						"captures": {
+							"1": {"name": "keyword.other"},
+							"3": {"name": "keyword.control"},
+							"4": {"name": "variable.other"}
+						},
+						"patterns": [
+							{
+								"include": "#values"
+							}
+						]
+					},
+					{
+						"comment": "Invariant",
+						"match": "\\b(invariant)\\b",
+						"name": "keyword.control"
+					},
+					{
+						"include": "#values"
+					},
+					{
+						"comment": "Transitions",
+						"begin": "when",
+						"end": ";",
+						"beginCaptures": {
+							"0": {"name": "keyword.control"}
+						},
+						"patterns": [
+							{
+								"match": "\\b(goto|sync|do)\\b",
+								"name": "keyword.control"
+							},
+							{
+								"include": "#values"
+							}
+						]
+					}
+				]
+		},
+		"initial": {
+			"comment": "Initial state",
+			"begin": "(init)",
+			"end": "(end)",
+			"beginCaptures": {
+				"0": {"name": "keyword.control"}
+			},
+			"endCaptures": {
+				"0": {"name": "keyword.control"}
+			},
+			"patterns": [
+				{
+					"include": "#comments"
+				},
+				{
+					"comment": "Discrete",
+					"begin": "discrete",
+					"end": ";",
+					"beginCaptures": {
+						"0": {"name": "keyword.control"}
+					},
+					"patterns": [
+						{
+							"include": "#comments"
+						},
+						{
+							"include": "#values"
+						}
+					]
+				},
+				{
+					"comment": "Continuous",
+					"begin": "continuous",
+					"end": ";",
+					"beginCaptures": {
+						"0": {"name": "keyword.control"}
+					},
+					"patterns": [
+						{
+							"include": "#comments"
+						},
+						{
+							"include": "#values"
+						}
+					]
+				}
+			]
+		},
+		"values": {
+			"comment": "Constants and values",
+			"patterns": [
+				{
+				  "comment": "Constants",
+				  "match": "[^\\w+][0-9]+\\.?[0-9]*",
+				  "name": "constant.numeric.imitator"
+				},
+				{
+				  "comment": "True and False",
+				  "match": "\\b(true|false|True|False)",
+				  "name": "constant.language.imitator"
+				}
+			]
+		},
+		"strings": {
+			"name": "string.quoted.double.imitator",
+			"begin": "\"",
+			"end": "\"",
+			"patterns": [
+				{
+					"name": "constant.character.escape.imitator",
+					"match": "\\\\."
+				}
+			]
+		}
+	},
+	"scopeName": "source.imitator"
+}

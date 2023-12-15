@@ -1,0 +1,58 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "IMITATOR model",
+	"patterns": [
+		{
+			"include": "#comments"
+		},
+        {
+			"include": "#property"
+		}
+    ],
+    "repository": {
+        "comments": {
+			"name": "comment.block",
+			"begin": "\\(\\*",
+			"end": "\\*\\)",
+			"patterns": [
+				{
+					"comment": "File metadata",
+					"match": "\\s+\\*\\s+(\\w+(\\s\\w+)*)\\s*\\:\\s*(.*)",
+					"captures":{
+					  "1":
+						  {"name": "markup.bold.imitator"},
+					  "3":
+						  {"name": "markup.italic.imitator"}
+					},
+					"name": "comment.block.imitator"
+				}
+			]
+		},
+        "property": {
+            "begin": "property",
+            "end": ";",
+            "beginCaptures": {"0": {"name": "keyword.control"}},
+            "patterns": [
+                {
+                    "include": "#comments"
+                },
+                {
+                    "comment": "Quantification",
+                    "match": "\\#\\b(synth|exhibit|witness|exemplify)\\b",
+                    "name": "keyword.control"
+                },
+                {
+                    "comment": "Property",
+                    "match": "\\b(EF|AGnot|EFpmin|EFpmax|EFtmin|CycleLoop|CycleThrough|LoopThrough|NZCycle|Valid|DeadlockFree|IM|InverseMethod|TracePreservation|IMconvex|IMK|IMunion|PRP|BCcover|BCshuffle|BCrandom|BCrandomseq|PRPC|Win|pattern)\\b",
+                    "name": "keyword.other"
+                },
+                {
+                    "comment": "Pattern",
+                    "match": "\\b(if|then|has happened before|everytime|within|has happened within|has happened one within|eventually|once before next|sequence|always)\\b",
+                    "name": "keyword.control"
+                }
+            ]
+        }
+    },
+    "scopeName": "source.imitator.property"
+}
